@@ -50,6 +50,7 @@ p28-filter/
 ```
 ## Branches
 * main : la branche la plus à jour
+* release-MM-YYYY : le ZIP du plugin (à télécharger pour l'installer sur son WP), MM est le mois et YYYY est l'année de la release
 * feature-X : développement de la feature X
 * hotfix-X : correction du bug X 
 
