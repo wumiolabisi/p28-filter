@@ -177,4 +177,26 @@ class P28_Filter
 	{
 		return $this->version;
 	}
+
+
+
+	/**
+	 * Prepare request with optional arguments
+	 */
+	public function p28_filter_request($endpoint, $per_page, $spec = '')
+	{
+		$request = new WP_REST_Request('GET', '/' . $endpoint);
+		$request->set_query_params(
+			array(
+				'per_page'	=> $per_page,
+				'status'	=> 'publish',
+				'order'		=> 'desc',
+				'orderby'	=> 'date',
+			)
+		);
+
+		$response = rest_do_request($request);
+
+		return $response;
+	}
 }
