@@ -52,6 +52,11 @@ class P28_Filter_Loader
 
 		$this->actions = array();
 		$this->filters = array();
+
+		//$this->add_action('rest_api_init', $this, 'p28_filter_params');
+
+		//register shortcodes
+		add_action('init', array($this, 'register_filter_shortcode'));
 	}
 
 	/**
@@ -127,5 +132,16 @@ class P28_Filter_Loader
 		foreach ($this->actions as $hook) {
 			add_action($hook['hook'], array($hook['component'], $hook['callback']), $hook['priority'], $hook['accepted_args']);
 		}
+	}
+
+
+	/**
+	 * Cette méthode appelle la méthode register_shortcodes() sur l'instance de P28_Filter.
+	 */
+	public function register_filter_shortcode()
+	{
+		// Récupère l'instance unique de P28_Filter via le Singleton
+		$p28_filter = P28_Filter::get_instance(); // Utilise la méthode get_instance
+		$p28_filter->register_shortcodes();  // Enregistre les shortcodes
 	}
 }

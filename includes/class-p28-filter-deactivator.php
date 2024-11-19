@@ -24,7 +24,7 @@ class P28_Filter_Deactivator
 {
 
 	/**
-	 * Short Description. (use period)
+	 * Deactivate the shortcode plugin.
 	 *
 	 * Long Description.
 	 *

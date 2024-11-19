@@ -29,6 +29,8 @@
  */
 class P28_Filter
 {
+	// Instance statique
+	private static $instance = null;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -78,6 +80,7 @@ class P28_Filter
 
 		$this->load_dependencies();
 		$this->set_locale();
+		$this->define_shortcodes();
 	}
 
 	/**
@@ -132,7 +135,10 @@ class P28_Filter
 		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 	}
 
-
+	private function define_shortcodes()
+	{
+		$this->loader->add_action('init', $this, 'register_shortcodes');
+	}
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
@@ -178,12 +184,21 @@ class P28_Filter
 		return $this->version;
 	}
 
-
-
+	/**
+	 * Get Singleton
+	 */
+	public static function get_instance()
+	{
+		// Si l'instance n'existe pas encore, on la crée
+		if (self::$instance === null) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 	/**
 	 * Prepare request with optional arguments
 	 */
-	public function p28_filter_request($endpoint, $per_page, $spec = '')
+	public function p28_filter_request($endpoint, $per_page)
 	{
 		$request = new WP_REST_Request('GET', '/' . $endpoint);
 		$request->set_query_params(
@@ -195,8 +210,32 @@ class P28_Filter
 			)
 		);
 
-		$response = rest_do_request($request);
+		$params = $request->get_params();
+		var_dump($params);
+		//or this : $posts_query->query( $query_args ); echo $posts_query->request;
 
-		return $response;
+		/*$response = rest_do_request($request);
+
+		return $response;*/
+	}
+
+	/**
+	 * Specify params
+	 */
+	//public function p28_filter_params() {}
+
+
+	/**
+	 * Creation and registration of shortcode
+	 */
+	public function p28_filter_shortcode()
+	{
+		ob_start();
+		include plugin_dir_path(dirname(__FILE__)) . '/templates/p28-filter-form.php';
+		return ob_get_clean();
+	}
+	public function register_shortcodes()
+	{
+		add_shortcode('p28_filter', [$this, 'p28_filter_shortcode']);
 	}
 }
