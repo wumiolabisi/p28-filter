@@ -1,0 +1,40 @@
+/* Breakpoints */
+$xl: 87.5em; // 4k and hi-res desktop
+$lg: 60em; // 1080 and hi-res laptops
+$md: 40em; // hi-res tablets and low-res laptops
+$sm: 28em; // mobile and low-res tablets
+$xs: 20em; // mobile only
+
+form#searchForm {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    width: 100%;
+    margin: 50px 0;
+
+    & div.p28f-form-item {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        label {
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        select {
+            color: #2e2e2e;
+            cursor: pointer;
+            outline: 0;
+            overflow: hidden;
+            padding: 10px 5px 10px 10px;
+            background: #f0eeee;
+            border: 1px solid #d5d5d5;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right .8em center/1.4em, #f0eeee;
+        }
+    }
+}

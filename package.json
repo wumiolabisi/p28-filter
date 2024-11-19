@@ -1,6 +1,6 @@
 {
   "name": "p28-filter",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Un plugin WordPress pour filtrer le contenu des pages d'archives",
   "scripts": {
     "build": "webpack --mode production",

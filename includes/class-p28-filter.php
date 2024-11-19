@@ -196,6 +196,22 @@ class P28_Filter
 		return self::$instance;
 	}
 	/**
+	 * Creation and registration of shortcode
+	 */
+	public function p28_filter_shortcode()
+	{
+		ob_start();
+		self::p28_filter_request('oeuvre', 5);
+		include plugin_dir_path(dirname(__FILE__)) . '/templates/p28-filter-form.php';
+		return ob_get_clean();
+	}
+
+	public function register_shortcodes()
+	{
+		add_shortcode('p28_filter', [$this, 'p28_filter_shortcode']);
+	}
+
+	/**
 	 * Prepare request with optional arguments
 	 */
 	public function p28_filter_request($endpoint, $per_page)
@@ -210,32 +226,42 @@ class P28_Filter
 			)
 		);
 
-		$params = $request->get_params();
-		var_dump($params);
-		//or this : $posts_query->query( $query_args ); echo $posts_query->request;
+		/*	$params = $request->get_params();
+		var_dump($params);*/
 
-		/*$response = rest_do_request($request);
-
-		return $response;*/
+		return $request;
 	}
 
 	/**
-	 * Specify params
+	 * Get query results
 	 */
-	//public function p28_filter_params() {}
+	public function p28_filter_results($query)
+	{
+		$response = rest_do_request($query);
 
+		if ($response->is_error()) {
+			// Convert to a WP_Error object.
+			$error = $response->as_error();
+			$message = $error->get_error_message();
+			$error_data = $error->get_error_data();
+			$status = isset($error_data['status']) ? $error_data['status'] : 500;
+			wp_die(sprintf('An error occurred: %s (%d)', $message, $error_data));
+		}
+
+		$data = $response->get_data();
+		$headers = $response->get_headers();
+		return $data;
+	}
 
 	/**
-	 * Creation and registration of shortcode
+	 * Get all taxonomies, terms or custom fields from current content
+	 * in order to create a dynamic search form.
 	 */
-	public function p28_filter_shortcode()
+	public function p28_get_caracteristics()
 	{
-		ob_start();
-		include plugin_dir_path(dirname(__FILE__)) . '/templates/p28-filter-form.php';
-		return ob_get_clean();
-	}
-	public function register_shortcodes()
-	{
-		add_shortcode('p28_filter', [$this, 'p28_filter_shortcode']);
+		$queried_object = get_queried_object();
+		if (is_object($queried_object)) {
+			return get_object_taxonomies($queried_object->name, 'objects');
+		}
 	}
 }
