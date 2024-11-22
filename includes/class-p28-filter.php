@@ -254,14 +254,44 @@ class P28_Filter
 	}
 
 	/**
-	 * Get all taxonomies, terms or custom fields from current content
-	 * in order to create a dynamic search form.
+	 * Get all taxonomies and terms from current queried object.
 	 */
 	public function p28_get_caracteristics()
 	{
 		$queried_object = get_queried_object();
 		if (is_object($queried_object)) {
 			return get_object_taxonomies($queried_object->name, 'objects');
+		}
+	}
+
+	/**
+	 * Get all ACF from current queried object.
+	 * Requires the ACF plugin (the free version works with this plugin).
+	 */
+	public function p28_get_ACF()
+	{
+		if (class_exists('ACF')) {
+			$queried_object = get_queried_object();
+			$queried_obj_id = get_queried_object_id();
+			$acf_stuff = [];
+
+			if (is_object($queried_object)) {
+
+				$acf_groups = acf_get_field_groups(array('post_id' => $queried_obj_id));
+
+				foreach ($acf_groups as $acf_group) {
+
+					if (acf_get_fields($acf_group['key'])) {
+						foreach (acf_get_fields($acf_group['key']) as $i => $field) {
+							if ($field['name'] == 'duree' || $field['name'] == 'date_de_sortie' || $field['name'] == 'pays') {
+								array_push($acf_stuff, $field);
+							}
+						}
+					}
+				}
+			}
+
+			return $acf_stuff;
 		}
 	}
 }
