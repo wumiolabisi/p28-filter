@@ -2,7 +2,7 @@
 Un système de filtrage AJAX de posts ou de custom posts, de taxonomies.
 
 # Comment marche ce plugin ?
-Via Appel Ajax, lorsqu'on est sur la page des archives d'un post en particulier ou une page particulière (shortcode).
+Via Appel Ajax, lorsqu'on est sur la page des archives (shortcode).
 
 
 # Structure du projet
