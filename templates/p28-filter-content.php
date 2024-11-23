@@ -1,3 +1,2 @@
-<div>
-    Resultats ici :
+<div class="p28f-results">
 </div>

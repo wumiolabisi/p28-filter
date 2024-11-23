@@ -203,6 +203,7 @@ class P28_Filter
 		ob_start();
 		self::p28_filter_request('oeuvre', 5);
 		include plugin_dir_path(dirname(__FILE__)) . '/templates/p28-filter-form.php';
+		include plugin_dir_path(dirname(__FILE__)) . '/templates/p28-filter-content.php';
 		return ob_get_clean();
 	}
 

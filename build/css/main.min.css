@@ -20,8 +20,18 @@ form#p28f-searchForm div.p28f-form-item label {
   text-transform: uppercase;
   font-size: 13px;
 }
+form#p28f-searchForm div.p28f-form-item span#p28f-reset-filters {
+  cursor: pointer;
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 9px;
+}
+form#p28f-searchForm div.p28f-form-item span#p28f-reset-filters:hover {
+  font-weight: 700;
+}
 form#p28f-searchForm div.p28f-form-item select {
   color: #2e2e2e;
+  width: 150px;
   cursor: pointer;
   outline: 0;
   overflow: hidden;

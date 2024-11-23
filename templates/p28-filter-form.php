@@ -13,7 +13,7 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
                 <div class="p28f-form-item">
 
                     <label for="<?php echo $caracteristic->name; ?>"><?php echo $caracteristic->label; ?></label>
-                    <select class="p28f-select" name="<?php echo $caracteristic->name; ?>" id="<?php echo $caracteristic->name; ?>">
+                    <select class="p28f-select" name="<?php echo $caracteristic->name; ?>" id="<?php echo strval(array_search($caracteristic->label, wp_list_pluck(get_taxonomies([], 'objects'), 'label'))); ?>">
                         <option disabled selected>Sélectionnez</option>
                         <?php
                         foreach (get_terms($caracteristic->name) as $term) :  ?>
@@ -51,7 +51,9 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
             </select>
 
         </div>
-
-        <input type="submit" value="Filtrer" />
+        <div class="p28f-form-item">
+            <span id="p28f-reset-filters" onclick="window.location.reload();">Réinitialiser tous les filtres</span>
+            <input type="submit" value="Filtrer" />
+        </div>
     </div>
 </form>
