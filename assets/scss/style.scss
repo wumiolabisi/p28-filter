@@ -6,16 +6,17 @@ $sm: 28em; // mobile and low-res tablets
 $xs: 20em; // mobile only
 
 form#searchForm {
-    display: flex;
-    justify-content: space-between;
-    gap: 5px;
-    width: 100%;
-    margin: 50px 0;
+    div.p28f-search-form {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+        width: 100%;
+        margin: 50px 0;
+    }
 
     & div.p28f-form-item {
         display: flex;
         flex-direction: column;
-        width: 100%;
 
         label {
             font-weight: 700;

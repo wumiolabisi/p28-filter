@@ -283,7 +283,7 @@ class P28_Filter
 
 					if (acf_get_fields($acf_group['key'])) {
 						foreach (acf_get_fields($acf_group['key']) as $i => $field) {
-							if ($field['name'] == 'duree' || $field['name'] == 'date_de_sortie' || $field['name'] == 'pays') {
+							if ($field['name'] == 'date_de_sortie' || $field['name'] == 'pays') {
 								array_push($acf_stuff, $field);
 							}
 						}

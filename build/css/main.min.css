@@ -2,7 +2,7 @@
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./assets/scss/style.scss ***!
   \*****************************************************************************************************************/
 /* Breakpoints */
-form#searchForm {
+form#searchForm div.p28f-search-form {
   display: flex;
   justify-content: space-between;
   gap: 5px;
@@ -12,7 +12,6 @@ form#searchForm {
 form#searchForm div.p28f-form-item {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 form#searchForm div.p28f-form-item label {
   font-weight: 700;
