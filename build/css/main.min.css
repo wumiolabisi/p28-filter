@@ -4,10 +4,12 @@
 /* Breakpoints */
 form#searchForm div.p28f-search-form {
   display: flex;
-  justify-content: space-between;
-  gap: 5px;
+  align-items: end;
+  justify-content: center;
+  gap: 15px;
   width: 100%;
   margin: 50px 0;
+  flex-wrap: wrap;
 }
 form#searchForm div.p28f-form-item {
   display: flex;
@@ -30,6 +32,29 @@ form#searchForm div.p28f-form-item select {
   -moz-appearance: none;
   appearance: none;
   background: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg) no-repeat right 0.8em center/1.4em, #f0eeee;
+}
+form#searchForm input[type=submit],
+form#searchForm button {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: all ease 0.5s;
+  font-weight: 700;
+  text-align: center;
+  background: initial;
+  border: 2px solid #000;
+  border-radius: 5px;
+  width: 150px;
+  height: 40px;
+  text-transform: uppercase;
+  font-family: inherit;
+}
+form#searchForm input[type=submit]:hover,
+form#searchForm button:hover {
+  background-color: #2e2e2e;
+  color: #ffffff;
 }
 
 /*# sourceMappingURL=main.min.css.map*/
