@@ -17,7 +17,7 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
                         <option disabled selected>Sélectionnez</option>
                         <?php
                         foreach (get_terms($caracteristic->name) as $term) :  ?>
-                            <option id="<?php echo $term->slug; ?>" value=" <?php echo $term->slug; ?>"><?php echo $term->name; ?></option>
+                            <option id="<?php echo $term->slug; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
                         <?php endforeach; ?>
                     </select>
 
@@ -28,11 +28,11 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
         if (isset($get_acf)) :
             foreach ($get_acf as $caracteristic) : ?>
                 <div class="p28f-form-item">
-                    <label for="<?php echo $caracteristic['name']; ?>"><?php echo $caracteristic['label']; ?></label>
-                    <select class="p28f-select" name="<?php echo $caracteristic['name']; ?>" id="<?php echo $caracteristic['name']; ?>">
+                    <label for="acf_<?php echo $caracteristic['name']; ?>"><?php echo $caracteristic['label']; ?></label>
+                    <select class="p28f-select" name="acf_<?php echo $caracteristic['name']; ?>" id="acf_<?php echo $caracteristic['name']; ?>">
                         <option disabled selected>Sélectionnez</option>
                         <?php foreach ($caracteristic['choices'] as $key => $choice) :  ?>
-                            <option id="<?php echo $key; ?>" value=" <?php echo $key; ?>"><?php echo $choice; ?></option>
+                            <option id="<?php echo $key; ?>" value="<?php echo $key; ?>"><?php echo $choice; ?></option>
                         <?php endforeach; ?>
                     </select>
 
@@ -41,8 +41,8 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
         <?php endif; ?>
 
         <div class="p28f-form-item">
-            <label for="duree">Durée</label>
-            <select class="p28f-select" name="duree" id="duree">
+            <label for="acf_duree">Durée</label>
+            <select class="p28f-select" name="acf_duree" id="acf_duree">
                 <option disabled selected>Sélectionnez</option>
                 <option id="a" value="1">Moins d'une heure</option>
                 <option id="b" value="2">Environ 1H30</option>

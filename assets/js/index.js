@@ -18,16 +18,18 @@ function onSearchFormChange(e) {
 
     // Récupération des valeurs du formulaire
     for (let element of selectElements) {
+
         if (element.value !== 'Sélectionnez') {
             data[element.name] = element.value.trim();
+            if (element.name == 'format') {
+                data['format-oeuvre'] = element.value.trim();
+                delete data.format;
+            }
         }
-        if (element.name == 'format') {
-            data['format-oeuvre'] = element.value.trim();
-            delete data.format;
-        }
+
     }
 
-    console.log(data); // Vérifiez l'objet data avant la requête
+    //console.log(data); // Vérifiez l'objet data avant la requête
 
     // Création de la collection et envoi de la requête
     const allPosts = new wp.api.collections.Oeuvres();
@@ -36,16 +38,20 @@ function onSearchFormChange(e) {
         data: {
             ...data,
             per_page: 5,
-            _embed: true
+            _embed: true,
+            /*   "acf": {
+                   ...dataAcf
+               }*/
         }
     }).done(function (posts) {
         const elmnt = document.querySelector('div.p28f-results');
         elmnt.innerHTML = "";
         posts.forEach(post => {
             elmnt.innerHTML += post.title.rendered + '\n';
+            elmnt.innerHTML += `<img src="${post._embedded['wp:featuredmedia'][0].source_url}" />`;
         });
     }).fail(function (error) {
-        elmnt.innerHTML += 'Erreur lors de la récupération des données :' + error;
+        elmnt.innerHTML += '<p>Erreur lors de la récupération des données :' + error + '</p>';
     });
 
 
