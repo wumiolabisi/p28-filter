@@ -53,9 +53,10 @@ class P28_Filter_Loader
 		$this->actions = array();
 		$this->filters = array();
 
-		//register shortcodes
-		add_action('init', array($this, 'register_filter_shortcode'));
+		//register shortcodes and rest filtering
+		add_action('init', array($this, 'register_filter_actions'));
 	}
+
 
 	/**
 	 * Add a new action to the collection to be registered with WordPress.
@@ -138,10 +139,14 @@ class P28_Filter_Loader
 	 *
 	 * @since    1.0.0
 	 */
-	public function register_filter_shortcode()
+	public function register_filter_actions()
 	{
 		// Récupère l'instance unique de P28_Filter via le Singleton
 		$p28_filter = P28_Filter::get_instance();
 		$p28_filter->register_shortcodes();
+
+
+		// Filtrage ACF in REST via le loader
+		$p28_filter->register_rest_hooks();
 	}
 }

@@ -36,8 +36,8 @@ function onSearchFormChange(e) {
 
     allPosts.fetch({
         data: {
+            per_page: 25,
             ...data,
-            per_page: 5,
             _embed: true,
         }
     }).done(function (posts) {
@@ -45,16 +45,18 @@ function onSearchFormChange(e) {
         const elmnt = document.querySelector('div.p28f-results');
         elmnt.innerHTML = "";
         posts.forEach(post => {
-            console.log(post);
-            elmnt.innerHTML += `<div class="p28f-result-item" id="${post.id}">
+
+            elmnt.innerHTML += `<div class="p28f-result-item" id="p28f-post-${post.id}">
             <a href="${post.link}" target="_blank" title="Découvrez ${post.title.rendered}">
-            <img class="p28f-thumbnail" alt="Affiche" src="${post._embedded['wp:featuredmedia'][0].source_url}" />
+            <img class="p28f-thumbnail" alt="Affiche de l'oeuvre ${post.title.rendered}" src="${post._embedded['wp:featuredmedia'][0].source_url}" />
             </a>
             </div>`;
         });
     }).fail(function (error) {
         elmnt.innerHTML += '<p class="p28f-msg-error">Oups, un souci est survenue lors de la récupération des fiches :' + error + '</p>';
     });
+
+    console.log(allPosts.hasMore());
 
 
 }

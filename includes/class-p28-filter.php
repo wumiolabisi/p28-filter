@@ -81,6 +81,7 @@ class P28_Filter
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_shortcodes();
+		$this->register_rest_hooks();
 	}
 
 	/**
@@ -201,7 +202,6 @@ class P28_Filter
 	public function p28_filter_shortcode()
 	{
 		ob_start();
-		self::p28_filter_request('oeuvre', 5);
 		include plugin_dir_path(dirname(__FILE__)) . '/templates/p28-filter-form.php';
 		include plugin_dir_path(dirname(__FILE__)) . '/templates/p28-filter-content.php';
 		return ob_get_clean();
@@ -213,46 +213,57 @@ class P28_Filter
 	}
 
 	/**
-	 * Prepare request with optional arguments
+	 * Gère les requêtes REST pour ajouter le filtrage des champs ACF
 	 */
-	public function p28_filter_request($endpoint, $per_page)
+	public function filter_rest_query($args, $request)
 	{
-		$request = new WP_REST_Request('GET', '/' . $endpoint);
-		$request->set_query_params(
-			array(
-				'per_page'	=> $per_page,
-				'status'	=> 'publish',
-				'order'		=> 'desc',
-				'orderby'	=> 'date',
-			)
+		// Récupère les paramètres de la requête REST
+		$params = $request->get_params();
+
+
+		$meta_query = array(
+			'relation'  => 'AND'
 		);
 
-		/*	$params = $request->get_params();
-		var_dump($params);*/
-
-		return $request;
-	}
-
-	/**
-	 * Get query results
-	 */
-	public function p28_filter_results($query)
-	{
-		$response = rest_do_request($query);
-
-		if ($response->is_error()) {
-			// Convert to a WP_Error object.
-			$error = $response->as_error();
-			$message = $error->get_error_message();
-			$error_data = $error->get_error_data();
-			$status = isset($error_data['status']) ? $error_data['status'] : 500;
-			wp_die(sprintf('An error occurred: %s (%d)', $message, $error_data));
+		if (isset($params['acf_pays']) && $params['acf_pays'] != null) {
+			$meta_query[] =  array(
+				'key'       => 'pays',
+				'value'     => array($params['acf_pays']),
+				'compare'   => 'IN'
+			);
+		}
+		if (isset($params['acf_duree']) && $params['acf_duree'] != null) {
+			$meta_query[] =  array(
+				'key'       => 'duree',
+				'value'     => array($params['acf_duree']),
+				'compare'   => 'IN'
+			);
+		}
+		if (isset($params['acf_date_de_sortie']) && $params['acf_date_de_sortie'] != null) {
+			$meta_query[] =  array(
+				'key'       => 'date_de_sortie',
+				'value'     => array($params['acf_date_de_sortie']),
+				'compare'   => 'IN'
+			);
 		}
 
-		$data = $response->get_data();
-		$headers = $response->get_headers();
-		return $data;
+
+
+
+		$args['meta_query'] = $meta_query;
+
+		return $args;
 	}
+	/**
+	 * Enregistrement du hook REST
+	 * avec le post_type courant sinon post_type sera oeuvre
+	 */
+	public function register_rest_hooks()
+	{
+		//$post_type = get_query_var('post_type', 'oeuvre');
+		$this->loader->add_filter("rest_oeuvre_query", $this, 'filter_rest_query', 1, 2);
+	}
+
 
 	/**
 	 * Get all taxonomies and terms from current queried object.
