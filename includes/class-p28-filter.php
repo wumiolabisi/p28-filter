@@ -228,10 +228,11 @@ class P28_Filter
 		);
 
 		if (isset($params['pays']) && $params['pays'] != null) {
+
 			$meta_query[] =  array(
 				'key'       => 'pays',
-				'value'     => $params['pays'],
-				'compare'   => '='
+				'value'     => '"' . $request['pays'] . '"',
+				'compare'   => 'LIKE'
 			);
 		}
 		if (isset($params['duree']) && $params['duree'] != null) {
@@ -296,8 +297,8 @@ class P28_Filter
 		if (isset($params['date_de_sortie']) && $params['date_de_sortie'] != null) {
 			$meta_query[] =  array(
 				'key'       => 'date_de_sortie',
-				'value'     => array($params['date_de_sortie']),
-				'compare'   => 'IN'
+				'value'     => $params['date_de_sortie'],
+				'compare'   => '='
 			);
 		}
 
