@@ -12,6 +12,7 @@ if (p28SearchForm) {
 function onSearchFormChange(e) {
 
     e.preventDefault();
+    const elmnt = document.querySelector('div.p28f-results');
 
     let selectElements = document.getElementsByClassName("p28f-select");
     const data = {};
@@ -35,14 +36,16 @@ function onSearchFormChange(e) {
 
     allPosts.fetch({
         data: {
-            per_page: 10,
+            per_page: 5,
             ...data,
             _embed: true
         }
-    }).done(function (posts) {
+    }).then(elmnt.innerHTML += '<p class="p28f-loading">Chargement ...</p>').done(function (posts) {
 
-        const elmnt = document.querySelector('div.p28f-results');
+
         elmnt.innerHTML = "";
+
+
         posts.forEach(post => {
 
             elmnt.innerHTML += `<div class="p28f-result-item" id="p28f-post-${post.id}">
@@ -51,11 +54,36 @@ function onSearchFormChange(e) {
             </a>
             </div>`;
         });
+
+
+
+        /**
+         * Load More
+         */
+        if (allPosts.hasMore() != null) {
+
+            console.log(allPosts.hasMore);
+
+            elmnt.innerHTML += "<button id='p28f-load-more'>Charger plus</button>";
+
+            let p28fLoadMoreButton = document.querySelector('button#p28f-load-more');
+
+            p28fLoadMoreButton.addEventListener('click', function () {
+
+                p28fLoadMoreButton.style.display = "none";
+                loadMorePosts(allPosts, elmnt, p28fLoadMoreButton);
+            });
+
+        } else {
+            elmnt.innerHTML += "<p>Pas d'autres fiches disponibles</p>";
+        }
+
+
+
     }).fail(function (error) {
         elmnt.innerHTML += '<p class="p28f-msg-error">Oups, un souci est survenue lors de la récupération des fiches :' + error + '</p>';
     });
 
-    console.log(allPosts.hasMore());
 
 
 }
@@ -101,4 +129,29 @@ function DureeAcf(selectedValue) {
     } while (intervalStart < intervalEnd);
 
     return dureeValues;
+}
+
+function loadMorePosts(posts, elementHTML, trigger) {
+    posts.more().done(function (nextPosts) {
+
+
+        nextPosts.forEach(nextPost => {
+
+            elementHTML.innerHTML += `<div class="p28f-result-item" id="p28f-post-${nextPost.id}">
+            <a href="${nextPost.link}" target="_blank" title="Découvrez ${nextPost.title.rendered}">
+            <img class="p28f-thumbnail" alt="Affiche de l'oeuvre ${nextPost.title.rendered}" src="${nextPost._embedded['wp:featuredmedia'][0].source_url}" />
+            </a>
+            </div>`;
+        });
+
+        if (posts.hasMore()) {
+            trigger.style.display = 'inline-block';
+        } else {
+            trigger.style.display = 'none';
+            elementHTML.innerHTML += "<p>Pas d'autres fiches disponibles</p>";
+        }
+    }).fail(function (error) {
+        console.error('Oups une erreur est survenue lors de la récupération des posts :', error);
+    });
+
 }
