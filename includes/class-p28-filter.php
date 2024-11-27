@@ -217,6 +217,8 @@ class P28_Filter
 	 */
 	public function filter_rest_query($args, $request)
 	{
+
+
 		// Récupère les paramètres de la requête REST
 		$params = $request->get_params();
 
@@ -225,23 +227,39 @@ class P28_Filter
 			'relation'  => 'AND'
 		);
 
-		if (isset($params['acf_pays']) && $params['acf_pays'] != null) {
+		if (isset($params['pays']) && $params['pays'] != null) {
 			$meta_query[] =  array(
-				'key'       => 'acf_pays',
-				'value'     => array($params['acf_pays']),
-				'compare'   => 'IN'
+				'key'       => 'pays',
+				'value'     => $params['pays'],
+				'compare'   => '='
 			);
 		}
-		if (isset($params['acf_duree']) && $params['acf_duree'] != null) {
+		if (isset($params['duree']) && $params['duree'] != null) {
 
-			$acf_duree_value = $params['acf_duree'];
+			$acf_duree_value = $params['duree'];
+
+			/**
+			 * Je n'arrive pas à avoir les bons posts
+			 * Je sais que la valeur enregistrée est de type 'longtext'
+			 * il faut donc que je travaille sur des types int pour faire une comparaison 
+			 * et ensuite que je récup ce que j'ai trouvé en string
+			 * 
+			 * 1. D'abord, récupérer l'indice (1, 2, 3 ou 4) qui correspond au choix de l'utilisateur
+			 * 2. Pour chaque indice, il faut faire une vérification : 
+			 * 	  -> si indice = 1, alors il faut récup toutes les oeuvres ?? qui ont une durée de maximum 60 minutes.
+			 * 3. Mettre les posts qui correspondent à notre critère de sélection dans un tableau
+			 * 4. Envoyer ce tableau à la meta_query
+			 */
+
+
+
 
 			switch ($acf_duree_value) {
 					//Moins d'une heure
 				case "1":
 					$meta_query[] =  array(
 						'key'       => 'duree',
-						'value'     => 60,
+						'value'     => '60',
 						'compare'   => '>=',
 						'type'      => 'NUMERIC'
 					);
@@ -268,17 +286,17 @@ class P28_Filter
 				case "4":
 					$meta_query[] =  array(
 						'key'       => 'duree',
-						'value'     => 120,
+						'value'     => '120',
 						'compare'   => '>',
 						'type'      => 'NUMERIC'
 					);
 					break;
 			}
 		}
-		if (isset($params['acf_date_de_sortie']) && $params['acf_date_de_sortie'] != null) {
+		if (isset($params['date_de_sortie']) && $params['date_de_sortie'] != null) {
 			$meta_query[] =  array(
 				'key'       => 'date_de_sortie',
-				'value'     => array($params['acf_date_de_sortie']),
+				'value'     => array($params['date_de_sortie']),
 				'compare'   => 'IN'
 			);
 		}
@@ -299,6 +317,7 @@ class P28_Filter
 		//$post_type = get_query_var('post_type', 'oeuvre');
 		$this->loader->add_filter("rest_oeuvre_query", $this, 'filter_rest_query', 1, 2);
 	}
+
 
 
 	/**

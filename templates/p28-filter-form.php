@@ -28,8 +28,8 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
         if (isset($get_acf)) :
             foreach ($get_acf as $caracteristic) : ?>
                 <div class="p28f-form-item">
-                    <label for="acf_<?php echo $caracteristic['name']; ?>"><?php echo $caracteristic['label']; ?></label>
-                    <select class="p28f-select" name="acf_<?php echo $caracteristic['name']; ?>" id="acf_<?php echo $caracteristic['name']; ?>">
+                    <label for="<?php echo $caracteristic['name']; ?>"><?php echo $caracteristic['label']; ?></label>
+                    <select class="p28f-select" name="<?php echo $caracteristic['name']; ?>" id="<?php echo $caracteristic['name']; ?>">
                         <option disabled selected>Sélectionnez</option>
                         <?php foreach ($caracteristic['choices'] as $key => $choice) :  ?>
                             <option id="<?php echo $key; ?>" value="<?php echo $key; ?>"><?php echo $choice; ?></option>
