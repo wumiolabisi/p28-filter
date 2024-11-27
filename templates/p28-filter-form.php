@@ -41,8 +41,8 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
         <?php endif; ?>
 
         <div class="p28f-form-item">
-            <label for="acf_duree">Durée</label>
-            <select class="p28f-select" name="acf_duree" id="acf_duree">
+            <label for="duree">Durée</label>
+            <select class="p28f-select" name="duree" id="duree">
                 <option disabled selected>Sélectionnez</option>
                 <option id="a" value="1">Moins d'une heure</option>
                 <option id="b" value="2">Environ 1H30</option>

@@ -212,130 +212,124 @@ class P28_Filter
 		add_shortcode('p28_filter', [$this, 'p28_filter_shortcode']);
 	}
 
+
 	/**
-	 * Gère les requêtes REST pour ajouter le filtrage des champs ACF
+	 * Filtrage de l'API REST avec
+	 * les champs ACF
+	 * 
+	 * @return 	array	Les arguments pour la meta_query de la WP_Query	
 	 */
-	public function filter_rest_query($args, $request)
+	private function filterable_acf_fields($r)
 	{
-
-
-		// Récupère les paramètres de la requête REST
-		$params = $request->get_params();
-
-		//var_export($params);
 		$meta_query = array(
 			'relation'  => 'AND'
 		);
 
-		if (isset($params['pays']) && $params['pays'] != null) {
+		if (isset($r['pays']) && $r['pays'] != null) {
 
 			$meta_query[] =  array(
 				'key'       => 'pays',
-				'value'     => '"' . $params['pays'] . '"',
+				'value'     => '"' . $r['pays'] . '"',
 				'compare'   => 'LIKE'
 			);
 		}
-		if (isset($params['duree']) && $params['duree'] != null) {
 
-			$acf_duree_value = $params['duree'];
+		if (isset($r['duree']) && $r['duree'] != null) {
 
-			/**
-			 * Je n'arrive pas à avoir les bons posts
-			 * Je sais que la valeur enregistrée est de type 'longtext'
-			 * il faut donc que je travaille sur des types int pour faire une comparaison 
-			 * et ensuite que je récup ce que j'ai trouvé en string
-			 * 
-			 * 1. D'abord, récupérer l'indice (1, 2, 3 ou 4) qui correspond au choix de l'utilisateur
-			 * 2. Pour chaque indice, il faut faire une vérification : 
-			 * 	  -> si indice = 1, alors il faut récup toutes les oeuvres ?? qui ont une durée de maximum 60 minutes.
-			 * 3. Mettre les posts qui correspondent à notre critère de sélection dans un tableau
-			 * 4. Envoyer ce tableau à la meta_query
-			 */
+			$duree = [];
 
-			/*
+			foreach ($r['duree'] as $param) {
+				$duree[] = strval($param);
+			}
 
-
-			switch ($acf_duree_value) {
-					//Moins d'une heure
-				case "1":
-					$meta_query[] =  array(
-						'key'       => 'duree',
-						'value'     => '60',
-						'compare'   => '>=',
-						'type'      => 'NUMERIC'
-					);
-					break;
-					//Environ 1h30
-				case "2":
-					$meta_query[] =  array(
-						'key'       => 'duree',
-						'value'     => array('60', '90'),
-						'compare'   => 'BETWEEN',
-						'type'      => 'NUMERIC'
-					);
-					break;
-					//Entre 1h30 et 2h
-				case "3":
-					$meta_query[] =  array(
-						'key'       => 'duree',
-						'value'     => array('90', '120'),
-						'compare'   => 'BETWEEN',
-						'type'      => 'NUMERIC'
-					);
-					break;
-					//Plus de 2h
-				case "4":
-					$meta_query[] =  array(
-						'key'       => 'duree',
-						'value'     => '120',
-						'compare'   => '>',
-						'type'      => 'NUMERIC'
-					);
-					break;
-			}*/
+			$meta_query[] =  array(
+				'key'       => 'duree',
+				'value'     => $duree,
+				'compare'   => 'IN'
+			);
 		}
 
-		if (isset($params['date_de_sortie']) && $params['date_de_sortie'] != null) {
+		if (isset($r['date_de_sortie']) && $r['date_de_sortie'] != null) {
 			$meta_query[] =  array(
 				'key'       => 'date_de_sortie',
-				'value'     => $params['date_de_sortie'],
+				'value'     => $r['date_de_sortie'],
 				'compare'   => '='
 			);
 		}
+
+		return $meta_query;
+	}
+
+	/**
+	 * Filtrage par taxonomies
+	 * 
+	 * @return 	array	Les arguments pour la tax_query de la WP_Query	
+	 */
+	private function filterable_taxonomies($r)
+	{
 		$tax_query = array(
 			'relation'  => 'AND'
 		);
 
-		if (isset($params['genre']) && $params['genre'] != null) {
+		if (isset($r['genre']) && $r['genre'] != null) {
 			$tax_query[] =  array(
 				'taxonomy' => 'genre',
 				'field'    => 'term_id',
-				'terms'    => intval($params['genre'][0])
+				'terms'    => intval($r['genre'][0])
 			);
 		}
 
-		if (isset($params['format']) && $params['format'] != null) {
+		if (isset($r['format']) && $r['format'] != null) {
 			$tax_query[] =  array(
 				'taxonomy' => 'format',
 				'field'    => 'term_id',
-				'terms'    => intval($params['format'][0])
+				'terms'    => intval($r['format'][0])
 			);
 		}
 
+		if (isset($r['etiquette']) && $r['etiquette'] != null) {
+			$tax_query[] =  array(
+				'taxonomy' => 'etiquette',
+				'field'    => 'term_id',
+				'terms'    => intval($r['etiquette'][0])
+			);
+		}
 
-		$args['tax_query'] = $tax_query;
-		$args['meta_query'] = $meta_query;
+		if (isset($r['realisation']) && $r['realisation'] != null) {
+			$tax_query[] =  array(
+				'taxonomy' => 'realisation',
+				'field'    => 'term_id',
+				'terms'    => intval($r['realisation'][0])
+			);
+		}
 
+		return $tax_query;
+	}
+
+
+	/**
+	 * Gère la requête REST et ajoute le filtrage par taxonomie et par champs ACF
+	 * 
+	 * @return 	array	Les arguments pour la WP_Query	
+	 */
+	public function filter_rest_query($args, $request)
+	{
+
+		// Récupère les paramètres de la requête REST
+		$params = $request->get_params();
+
+		$args['tax_query'] = $this->filterable_taxonomies($params);
+		$args['meta_query'] = $this->filterable_acf_fields($params);
 
 		return $args;
 	}
+
 	/**
 	 * Enregistrement du hook REST
-	 * avec le post_type courant sinon post_type sera oeuvre
+	 * avec le post_type oeuvre
 	 */
 	public function register_rest_hooks()
 	{
-		//$post_type = get_query_var('post_type', 'oeuvre');
 		$this->loader->add_filter("rest_oeuvre_query", $this, 'filter_rest_query', 1, 2);
 	}
 

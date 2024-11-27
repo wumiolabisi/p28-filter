@@ -23,7 +23,12 @@ function onSearchFormChange(e) {
             data[element.name] = element.value;
         }
 
+        if (element.name == "duree") {
+            data['duree'] = DureeAcf(element.value);
+        }
+
     }
+    //console.log(data);
 
     // Création de la collection et envoi de la requête
     const allPosts = new wp.api.collections.Oeuvres();
@@ -53,4 +58,47 @@ function onSearchFormChange(e) {
     console.log(allPosts.hasMore());
 
 
+}
+
+
+/**
+ * Gestion du filtrage de la durée d'un film
+ */
+
+function DureeAcf(selectedValue) {
+    let dureeValues = [];
+    let intervalStart;
+    let intervalEnd;
+
+    switch (selectedValue) {
+
+        case '1':
+            intervalStart = 1;
+            intervalEnd = 61;
+            break;
+
+        case '2':
+            intervalStart = 61;
+            intervalEnd = 91;
+            break;
+
+        case '3':
+            intervalStart = 91;
+            intervalEnd = 121;
+            break;
+
+        case '4':
+            intervalStart = 122;
+            intervalEnd = 360;
+            break;
+    }
+
+    do {
+
+        dureeValues.push(intervalStart);
+        intervalStart++;
+
+    } while (intervalStart < intervalEnd);
+
+    return dureeValues;
 }
