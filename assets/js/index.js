@@ -38,7 +38,7 @@ function onSearchFormChange(e) {
         data: {
             per_page: 25,
             ...data,
-            _embed: true,
+            _embed: true
         }
     }).done(function (posts) {
 

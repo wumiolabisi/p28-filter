@@ -227,17 +227,53 @@ class P28_Filter
 
 		if (isset($params['acf_pays']) && $params['acf_pays'] != null) {
 			$meta_query[] =  array(
-				'key'       => 'pays',
+				'key'       => 'acf_pays',
 				'value'     => array($params['acf_pays']),
 				'compare'   => 'IN'
 			);
 		}
 		if (isset($params['acf_duree']) && $params['acf_duree'] != null) {
-			$meta_query[] =  array(
-				'key'       => 'duree',
-				'value'     => array($params['acf_duree']),
-				'compare'   => 'IN'
-			);
+
+			$acf_duree_value = $params['acf_duree'];
+
+			switch ($acf_duree_value) {
+					//Moins d'une heure
+				case "1":
+					$meta_query[] =  array(
+						'key'       => 'duree',
+						'value'     => 60,
+						'compare'   => '>=',
+						'type'      => 'NUMERIC'
+					);
+					break;
+					//Environ 1h30
+				case "2":
+					$meta_query[] =  array(
+						'key'       => 'duree',
+						'value'     => array('60', '90'),
+						'compare'   => 'BETWEEN',
+						'type'      => 'NUMERIC'
+					);
+					break;
+					//Entre 1h30 et 2h
+				case "3":
+					$meta_query[] =  array(
+						'key'       => 'duree',
+						'value'     => array('90', '120'),
+						'compare'   => 'BETWEEN',
+						'type'      => 'NUMERIC'
+					);
+					break;
+					//Plus de 2h
+				case "4":
+					$meta_query[] =  array(
+						'key'       => 'duree',
+						'value'     => 120,
+						'compare'   => '>',
+						'type'      => 'NUMERIC'
+					);
+					break;
+			}
 		}
 		if (isset($params['acf_date_de_sortie']) && $params['acf_date_de_sortie'] != null) {
 			$meta_query[] =  array(
