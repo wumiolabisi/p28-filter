@@ -222,7 +222,7 @@ class P28_Filter
 		// Récupère les paramètres de la requête REST
 		$params = $request->get_params();
 
-
+		//var_export($params);
 		$meta_query = array(
 			'relation'  => 'AND'
 		);
@@ -231,7 +231,7 @@ class P28_Filter
 
 			$meta_query[] =  array(
 				'key'       => 'pays',
-				'value'     => '"' . $request['pays'] . '"',
+				'value'     => '"' . $params['pays'] . '"',
 				'compare'   => 'LIKE'
 			);
 		}
@@ -252,7 +252,7 @@ class P28_Filter
 			 * 4. Envoyer ce tableau à la meta_query
 			 */
 
-
+			/*
 
 
 			switch ($acf_duree_value) {
@@ -292,8 +292,9 @@ class P28_Filter
 						'type'      => 'NUMERIC'
 					);
 					break;
-			}
+			}*/
 		}
+
 		if (isset($params['date_de_sortie']) && $params['date_de_sortie'] != null) {
 			$meta_query[] =  array(
 				'key'       => 'date_de_sortie',
@@ -301,11 +302,30 @@ class P28_Filter
 				'compare'   => '='
 			);
 		}
+		$tax_query = array(
+			'relation'  => 'AND'
+		);
+
+		if (isset($params['genre']) && $params['genre'] != null) {
+			$tax_query[] =  array(
+				'taxonomy' => 'genre',
+				'field'    => 'term_id',
+				'terms'    => intval($params['genre'][0])
+			);
+		}
+
+		if (isset($params['format']) && $params['format'] != null) {
+			$tax_query[] =  array(
+				'taxonomy' => 'format',
+				'field'    => 'term_id',
+				'terms'    => intval($params['format'][0])
+			);
+		}
 
 
-
-
+		$args['tax_query'] = $tax_query;
 		$args['meta_query'] = $meta_query;
+
 
 		return $args;
 	}
