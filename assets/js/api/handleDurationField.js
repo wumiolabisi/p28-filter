@@ -1,6 +1,6 @@
 /**
  *
- * Créer le résultat du post ID
+ * Récupère les résultats possibles du champs acf "duree"
  *
  * @param {selectedValue}  id  - L'ID de l'option choisie par l'utilisateur
  * 

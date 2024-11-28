@@ -92,7 +92,23 @@ p.p28f-loading {
   font-style: italic;
 }
 
-button#p28f-load-more {
+div.p28f-load-more-container,
+div.p28f-error-container {
+  display: flex;
+  justify-content: center;
+  margin: 2% 0;
+}
+div.p28f-load-more-container p,
+div.p28f-error-container p {
+  border: 1px solid #ededed;
+  border-radius: 5px;
+  width: 100%;
+  text-align: center;
+  padding: 2% 0;
+  font-size: 12px;
+}
+
+button#p28f-load-more-btn {
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -109,7 +125,7 @@ button#p28f-load-more {
   text-transform: uppercase;
   font-family: inherit;
 }
-button#p28f-load-more:hover {
+button#p28f-load-more-btn:hover {
   background-color: #2e2e2e;
   color: #ffffff;
 }

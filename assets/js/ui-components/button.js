@@ -10,13 +10,11 @@
  */
 export function button(text) {
 
-    let buttonContainer = document.createElement("div");
-    buttonContainer.id = "p28f-load-more-btn-container";
 
     let buttonElement = document.createElement("button");
-    buttonElement.id = "p28f-load-more";
+    buttonElement.id = "p28f-load-more-btn";
     buttonElement.value, buttonElement.innerHTML = text;
 
-    return buttonContainer.appendChild(buttonElement);
+    return buttonElement.outerHTML;
 
 }
