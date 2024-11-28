@@ -24,16 +24,17 @@ const p28ResultsArea = document.querySelector('div.p28f-results');
 const p28ErrorArea = document.querySelector('div.p28f-error-container');
 const p28EndMsgArea = document.querySelector('div.p28f-load-more-container');
 
+document.addEventListener('DOMContentLoaded', retrievePosts);
 
 
 /**
  * Fires the event
  */
 if (p28SearchForm) {
-    p28SearchForm.addEventListener('change', onSearchFormChange, false);
+    p28SearchForm.addEventListener('change', retrievePosts, false);
 }
 
-function onSearchFormChange(e) {
+function retrievePosts(e) {
 
     e.preventDefault();
 
@@ -59,15 +60,18 @@ function onSearchFormChange(e) {
 
     allPosts.fetch({
         data: {
-            per_page: 5,
+            per_page: 8,
             ...data,
             _embed: true
         }
 
     }).then(p28ResultsArea.innerHTML = '<p class="p28f-loading">Chargement ...</p>', p28EndMsgArea.innerHTML = "").done(function (posts) {
 
+        console.log(posts);
+
         p28EndMsgArea.innerHTML = "";
         p28ResultsArea.innerHTML = "";
+
         posts.forEach(posts => {
             p28ResultsArea.innerHTML += gridResult(posts.id, posts.title.rendered, posts.link, posts._embedded['wp:featuredmedia'][0].source_url);
         });

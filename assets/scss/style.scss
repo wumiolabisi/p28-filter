@@ -81,10 +81,11 @@ form#p28f-searchForm {
 
     grid-template-columns: repeat(2, 1fr);
     display: grid;
-    align-items: center;
-    justify-content: space-around;
+    align-items: start;
+    justify-content: center;
     gap: 5px;
     flex-wrap: wrap;
+    min-height: 500px;
 
 
     & div.p28f-result-item {

@@ -69,10 +69,11 @@ form#p28f-searchForm button:hover {
 .p28f-results {
   grid-template-columns: repeat(2, 1fr);
   display: grid;
-  align-items: center;
-  justify-content: space-around;
+  align-items: start;
+  justify-content: center;
   gap: 5px;
   flex-wrap: wrap;
+  min-height: 500px;
 }
 .p28f-results div.p28f-result-item {
   width: 100%;
