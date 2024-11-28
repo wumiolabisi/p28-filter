@@ -13,6 +13,7 @@
  */
 export function gridResult(id, title, link, media) {
 
+
     return `<div class="p28f-result-item" id="p28f-post-${id}">
     <a href="${link}" target="_blank" title="Découvrez ${title}">
     <img class="p28f-thumbnail" alt="Affiche de l'oeuvre ${title}" src="${media}" />

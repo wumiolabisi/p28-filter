@@ -80,6 +80,11 @@ npm run build
    * L'utilisation des champs ACF a complexifié la récupération des posts, notamment car l'API REST fonctionne avec des IDs (donc des types int) et les valeurs numériques de champs ACF sont enregistrées en BDD en longtext. Nativement, il n'y a pas la possibilité de forcer un type de variable.
    * La récupération des posts d'une archive en filtrant sur les champs ACF n'est pas nativement possible : il a fallu que je modifie la requête avec rest_{$post_type}_query. C'était très peu documenté, beaucoup de lecture à faire pour s'assurer que ce n'était pas possible. 
 
+# Améliorations prévues
+* Message ou animation de chargement plus sympa
+* Message ou animation de chargement après un "charger plus"
+* Compatibilité sur toute les pages d'archives
+* Affichage de l'affiche du champ ACF plutot que de la thumbnail
 
 # Evolutions possibles
 

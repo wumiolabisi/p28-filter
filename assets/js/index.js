@@ -65,16 +65,26 @@ function retrievePosts(e) {
             _embed: true
         }
 
-    }).then(p28ResultsArea.innerHTML = '<p class="p28f-loading">Chargement ...</p>', p28EndMsgArea.innerHTML = "").done(function (posts) {
+    }).then(
+        p28ResultsArea.innerHTML = '<p class="p28f-loading">Chargement ...</p>',
+        p28EndMsgArea.innerHTML = ""
+    ).done(function (posts) {
 
-        console.log(posts);
 
-        p28EndMsgArea.innerHTML = "";
         p28ResultsArea.innerHTML = "";
 
-        posts.forEach(posts => {
-            p28ResultsArea.innerHTML += gridResult(posts.id, posts.title.rendered, posts.link, posts._embedded['wp:featuredmedia'][0].source_url);
-        });
+        if (posts.length === 0) {
+
+            p28EndMsgArea.innerHTML = "<p>Il n'y a pas de posts correspondant à votre recherche.</p>";
+
+        } else {
+
+            posts.forEach(post => {
+                p28ResultsArea.innerHTML += gridResult(post.id, post.title.rendered, post.link, post.acf.affiche_url);
+
+            });
+        }
+
 
         /**
          * Load More
@@ -92,6 +102,7 @@ function retrievePosts(e) {
             });
 
         } else {
+
             p28EndMsgArea.innerHTML = '<p>Fin des posts.</p>';
         }
 

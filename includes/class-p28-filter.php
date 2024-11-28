@@ -259,6 +259,19 @@ class P28_Filter
 
 		return $meta_query;
 	}
+	public function modify_rest_response($response, $post)
+	{
+
+		$affiche = get_field('affiche', $post->ID);
+
+		if ($affiche) {
+
+			$response->data['acf']['affiche_url'] = wp_get_attachment_url($affiche['id']);
+		}
+
+		return $response;
+	}
+
 
 	/**
 	 * Filtrage par taxonomies
@@ -325,12 +338,14 @@ class P28_Filter
 	}
 
 	/**
-	 * Enregistrement du hook REST
+	 * Enregistrement du hook REST, 
+	 * du hook PREPARE REST pour récupérer le champs acf affiche,
 	 * avec le post_type oeuvre
 	 */
 	public function register_rest_hooks()
 	{
 		$this->loader->add_filter("rest_oeuvre_query", $this, 'filter_rest_query', 1, 2);
+		$this->loader->add_filter('rest_prepare_oeuvre', $this, 'modify_rest_response', 2, 3);
 	}
 
 
@@ -363,8 +378,12 @@ class P28_Filter
 
 				foreach ($acf_groups as $acf_group) {
 
+
 					if (acf_get_fields($acf_group['key'])) {
+
 						foreach (acf_get_fields($acf_group['key']) as $i => $field) {
+
+
 							if ($field['name'] == 'date_de_sortie' || $field['name'] == 'pays') {
 								array_push($acf_stuff, $field);
 							}
