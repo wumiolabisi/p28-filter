@@ -53,6 +53,9 @@ p28-filter/
 * release-MM-YYYY : le ZIP du plugin (à télécharger pour l'installer sur son WP), MM est le mois et YYYY est l'année de la release
 * feature-X : développement de la feature X
 * hotfix-X : correction du bug X 
+### Workflow
+* feature-logicAPI : Développement de la logique du système pour l'archive Oeuvre + mise en page du filtrage
+* feature-compatibilityAllNativeArchives : Rendre compatible le système sur toutes les pages d'archives native à WordPress
 
 # Développement
 ## Installation du projet
