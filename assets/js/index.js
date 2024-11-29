@@ -22,6 +22,7 @@ import { gridResult } from './ui/gridResult';
  */
 
 const p28SearchForm = document.getElementById('p28f-searchForm');
+const p28CountArea = document.querySelector('div.p28f-post-count');
 const p28ResultsArea = document.querySelector('div.p28f-results');
 const p28ErrorArea = document.querySelector('div.p28f-error-container');
 const p28EndMsgArea = document.querySelector('div.p28f-load-more-container');
@@ -101,38 +102,43 @@ function retrievePosts(e) {
 
         p28ResultsArea.innerHTML = "";
 
-        if (posts.length === 0) {
+        if (allPosts.state.totalObjects === 0) {
+            p28CountArea.innerHTML = "";
 
             p28EndMsgArea.innerHTML = "<p>Il n'y a pas de posts correspondant à votre recherche.</p>";
 
         } else {
-
+            p28CountArea.innerHTML = "<p>" + allPosts.state.totalObjects + " fiches trouvées</p>";
             posts.forEach(post => {
+
                 p28ResultsArea.innerHTML += gridResult(post.id, post.title.rendered, post.link, post.acf.affiche_url);
 
             });
+
+
+            /**
+        * Load More
+        */
+            if (allPosts.hasMore()) {
+                p28EndMsgArea.innerHTML = button('Charger plus');
+
+
+                let p28fLoadMoreButton = document.querySelector('button#p28f-load-more-btn');
+
+                p28fLoadMoreButton.addEventListener('click', function () {
+
+                    p28fLoadMoreButton.style.display = "none";
+                    loadMorePosts(allPosts, p28ResultsArea, p28EndMsgArea);
+                });
+
+            } else {
+
+                p28EndMsgArea.innerHTML = '<p>Fin des posts.</p>';
+            }
         }
 
 
-        /**
-         * Load More
-         */
-        if (allPosts.hasMore()) {
-            p28EndMsgArea.innerHTML = button('Charger plus');
 
-
-            let p28fLoadMoreButton = document.querySelector('button#p28f-load-more-btn');
-
-            p28fLoadMoreButton.addEventListener('click', function () {
-
-                p28fLoadMoreButton.style.display = "none";
-                loadMorePosts(allPosts, p28ResultsArea, p28EndMsgArea);
-            });
-
-        } else {
-
-            p28EndMsgArea.innerHTML = '<p>Fin des posts.</p>';
-        }
 
 
     }).fail(function (error) {

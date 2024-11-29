@@ -82,9 +82,7 @@ npm run build
 
 # Améliorations prévues
 * Message ou animation de chargement plus sympa
-* Message ou animation de chargement après un "charger plus"
 * Compatibilité sur toute les pages d'archives
-* Affichage de l'affiche du champ ACF plutot que de la thumbnail
 
 # Evolutions possibles
 
