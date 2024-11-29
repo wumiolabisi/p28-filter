@@ -53,9 +53,10 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
 
             </div>
         <?php endif; ?>
-
+        <div class="p28f-btn" id="p28f-filter-mobile-only">Filtrer</div>
         <div class="p28f-form-item">
             <span id="p28f-reset-filters" onclick="window.location.reload();">Réinitialiser tous les filtres</span>
         </div>
     </div>
 </form>
+<div class="p28f-btn" id="p28f-trigger-mobile-only">Filtrer</div>

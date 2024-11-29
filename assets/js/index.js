@@ -1,8 +1,8 @@
 import '../scss/style.scss';
-import { button } from './ui-components/button';
+import { button } from './ui/button';
 import { handleDurationField } from './api/handleDurationField';
 import { loadMorePosts } from './api/handleLoadMore';
-import { gridResult } from './ui-components/gridResult';
+import { gridResult } from './ui/gridResult';
 
 /**
  *
@@ -15,6 +15,8 @@ import { gridResult } from './ui-components/gridResult';
  * @param       {HTMLCollection}   p28EndMsgArea     - La zone prévue pour le message de fin de chargement des posts
  * @param       {EventListener}    e                 - L'évènement de changement du formulaire
  * @param       {HTMLCollection}   selectElements    - Les options sélectionnés par l'utilisateur
+ * @param       {HTMLCollection}   filterBtn         - Le bouton qui permet de simuler un filtrage en version mobile
+ * @param       {HTMLCollection}   triggerBtn        - Le bouton qui permet d'ouvrir le panneau de filtrage en version mobile
  * 
  * 
  */
@@ -23,6 +25,8 @@ const p28SearchForm = document.getElementById('p28f-searchForm');
 const p28ResultsArea = document.querySelector('div.p28f-results');
 const p28ErrorArea = document.querySelector('div.p28f-error-container');
 const p28EndMsgArea = document.querySelector('div.p28f-load-more-container');
+const filterBtn = document.querySelector("div#p28f-filter-mobile-only");
+const triggerBtn = document.querySelector("div#p28f-trigger-mobile-only");
 
 document.addEventListener('DOMContentLoaded', retrievePosts);
 
@@ -31,7 +35,31 @@ document.addEventListener('DOMContentLoaded', retrievePosts);
  * Fires the event
  */
 if (p28SearchForm) {
+
     p28SearchForm.addEventListener('change', retrievePosts, false);
+
+    p28SearchForm.classList.add("p28f-filtering-disappear");
+
+    filterBtn.addEventListener('click', function () {
+
+        filterBtn.innerHTML = "Chargement...";
+        filterBtn.style.backgroundColor, filterBtn.style.borderColor = "grey";
+
+        setTimeout(() => {
+            p28SearchForm.classList.add("p28f-filtering-disappear");
+            filterBtn.style.backgroundColor = "inherit";
+            filterBtn.innerHTML = "Filtrer";
+        }, 1000);
+
+
+    });
+
+    triggerBtn.addEventListener('click', function () {
+        p28SearchForm.classList.add("p28f-filtering-area-for-mobile");
+        p28SearchForm.classList.remove("p28f-filtering-disappear");
+
+    });
+
 }
 
 function retrievePosts(e) {

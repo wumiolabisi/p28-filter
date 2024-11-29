@@ -1,5 +1,5 @@
-import { button } from "../ui-components/button";
-import { gridResult } from "../ui-components/gridResult";
+import { button } from "../ui/button";
+import { gridResult } from "../ui/gridResult";
 
 /**
  *
@@ -18,7 +18,7 @@ export function loadMorePosts(posts, displayArea, p28EndMsgArea) {
     posts.more().done(function (nextPosts) {
 
         nextPosts.forEach(nextPost => {
-            displayArea.innerHTML += gridResult(nextPost.id, nextPost.title.rendered, nextPost.link, nextPost._embedded['wp:featuredmedia'][0].source_url);
+            displayArea.innerHTML += gridResult(nextPost.id, nextPost.title.rendered, nextPost.link, nextPost.acf.affiche_url);
         });
 
 
