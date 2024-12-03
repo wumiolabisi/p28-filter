@@ -7,25 +7,32 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
 <form id="p28f-searchForm">
     <div class="p28f-search-form">
         <?php
-        if (isset($get_taxo)) : ?>
+        if (isset($get_taxo)) :
+            if (is_array($get_taxo)) : ?>
+                <?php foreach ($get_taxo as $caracteristic) : ?>
+                    <div class="p28f-form-item">
 
-            <?php foreach ($get_taxo as $caracteristic) : ?>
-                <div class="p28f-form-item">
+                        <label for="<?php echo $caracteristic->name; ?>"><?php echo $caracteristic->label; ?></label>
+                        <select class="p28f-select" name="<?php echo $caracteristic->name; ?>" id="<?php echo strval(array_search($caracteristic->label, wp_list_pluck(get_taxonomies([], 'objects'), 'label'))); ?>">
+                            <option disabled selected>Sélectionnez</option>
+                            <?php
+                            foreach (get_terms($caracteristic->name) as $term) :  ?>
+                                <option id="<?php echo $term->slug; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
+                            <?php endforeach; ?>
+                        </select>
 
-                    <label for="<?php echo $caracteristic->name; ?>"><?php echo $caracteristic->label; ?></label>
-                    <select class="p28f-select" name="<?php echo $caracteristic->name; ?>" id="<?php echo strval(array_search($caracteristic->label, wp_list_pluck(get_taxonomies([], 'objects'), 'label'))); ?>">
-                        <option disabled selected>Sélectionnez</option>
-                        <?php
-                        foreach (get_terms($caracteristic->name) as $term) :  ?>
-                            <option id="<?php echo $term->slug; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-
-                </div>
-            <?php endforeach; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <input type="hidden" value="<?php echo $get_taxo->taxonomy; ?>" id="p28f-taxonomy" />
+                <input type="hidden" value="<?php echo $get_taxo->term_id; ?>" id="p28f-taxonomy-term-id" />
+            <?php endif; ?>
             <?php endif;
 
         if (isset($get_acf)) :
+
+
+
             foreach ($get_acf as $caracteristic) : ?>
                 <div class="p28f-form-item">
                     <label for="<?php echo $caracteristic['name']; ?>"><?php echo $caracteristic['label']; ?></label>
@@ -40,7 +47,8 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
             <?php endforeach; ?>
         <?php endif; ?>
 
-        <?php if (is_post_type_archive('oeuvre')) : ?>
+        <?php if (is_post_type_archive('oeuvre')) :
+        ?>
             <div class="p28f-form-item">
                 <label for="duree">Durée</label>
                 <select class="p28f-select" name="duree" id="duree">
@@ -52,11 +60,16 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
                 </select>
 
             </div>
-        <?php endif; ?>
-        <div class="p28f-btn" id="p28f-filter-mobile-only">Filtrer</div>
-        <div class="p28f-form-item">
-            <span id="p28f-reset-filters" onclick="window.location.reload();">Réinitialiser tous les filtres</span>
-        </div>
+            <div class="p28f-btn" id="p28f-filter-mobile-only">Filtrer</div>
+            <div class="p28f-form-item">
+                <span id="p28f-reset-filters" onclick="window.location.reload();">Réinitialiser tous les filtres</span>
+            </div>
+        <?php endif;
+        ?>
+
     </div>
 </form>
-<div class="p28f-btn" id="p28f-trigger-mobile-only">Filtrer</div>
+<?php if (is_post_type_archive('oeuvre')) :
+?>
+    <div class="p28f-btn" id="p28f-trigger-mobile-only">Filtrer</div>
+<?php endif; ?>

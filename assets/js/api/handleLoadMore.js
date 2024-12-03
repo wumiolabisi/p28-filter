@@ -30,6 +30,7 @@ export function loadMorePosts(posts, displayArea, p28EndMsgArea) {
         }
 
     }).fail(function (error) {
+
         p28ErrorArea.innerHTML = '<p>Une erreur est survenue :' + error + '</p>';
     });
 

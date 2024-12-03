@@ -82,7 +82,13 @@ function retrievePosts(e) {
         }
 
     }
-    //console.log(data);
+
+    if (document.querySelector("input#p28f-taxonomy") && document.querySelector("input#p28f-taxonomy-term-id")) {
+
+        const p28fTaxonomy = document.getElementById("p28f-taxonomy").value;
+        const p28fTaxonomyTerm = document.getElementById("p28f-taxonomy-term-id").value;
+        data[p28fTaxonomy] = p28fTaxonomyTerm;
+    }
 
     // Création de la collection et envoi de la requête
     const allPosts = new wp.api.collections.Oeuvres();

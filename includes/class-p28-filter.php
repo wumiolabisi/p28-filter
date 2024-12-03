@@ -269,6 +269,9 @@ class P28_Filter
 			$response->data['acf']['affiche_url'] = wp_get_attachment_url($affiche['id']);
 		}
 
+
+
+
 		return $response;
 	}
 
@@ -328,12 +331,12 @@ class P28_Filter
 	public function filter_rest_query($args, $request)
 	{
 
-		// Récupère les paramètres de la requête REST
 		$params = $request->get_params();
 
-		$args['tax_query'] = $this->filterable_taxonomies($params);
-		$args['meta_query'] = $this->filterable_acf_fields($params);
-
+		if (is_post_type_archive('oeuvre')) {
+			$args['tax_query'] = $this->filterable_taxonomies($params);
+			$args['meta_query'] = $this->filterable_acf_fields($params);
+		}
 		return $args;
 	}
 
@@ -356,8 +359,10 @@ class P28_Filter
 	public function p28_get_caracteristics()
 	{
 		$queried_object = get_queried_object();
-		if (is_object($queried_object)) {
+		if (is_object($queried_object) && $queried_object instanceof WP_Post_Type) {
 			return get_object_taxonomies($queried_object->name, 'objects');
+		} else {
+			return $queried_object;
 		}
 	}
 
@@ -374,24 +379,26 @@ class P28_Filter
 
 			if (is_object($queried_object)) {
 
-				$acf_groups = acf_get_field_groups(array('post_id' => $queried_obj_id));
-
-				foreach ($acf_groups as $acf_group) {
-
-
-					if (acf_get_fields($acf_group['key'])) {
-
-						foreach (acf_get_fields($acf_group['key']) as $i => $field) {
+				if ($queried_object instanceof WP_Post_Type) {
+					$acf_groups = acf_get_field_groups(array('post_id' => $queried_obj_id));
 
 
-							if ($field['name'] == 'date_de_sortie' || $field['name'] == 'pays') {
-								array_push($acf_stuff, $field);
+					foreach ($acf_groups as $acf_group) {
+
+
+						if (acf_get_fields($acf_group['key'])) {
+
+							foreach (acf_get_fields($acf_group['key']) as $i => $field) {
+
+
+								if ($field['name'] == 'date_de_sortie' || $field['name'] == 'pays') {
+									array_push($acf_stuff, $field);
+								}
 							}
 						}
 					}
 				}
 			}
-
 			return $acf_stuff;
 		}
 	}
