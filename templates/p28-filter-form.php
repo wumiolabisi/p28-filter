@@ -10,18 +10,20 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
         if (isset($get_taxo)) :
             if (is_array($get_taxo)) : ?>
                 <?php foreach ($get_taxo as $caracteristic) : ?>
-                    <div class="p28f-form-item">
+                    <?php if ($caracteristic->name == "realisation" || $caracteristic->name == "genre" || $caracteristic->name == "format" || $caracteristic->name == "etiquette") : ?>
+                        <div class="p28f-form-item">
 
-                        <label for="<?php echo $caracteristic->name; ?>"><?php echo $caracteristic->label; ?></label>
-                        <select class="p28f-select" name="<?php echo $caracteristic->name; ?>" id="<?php echo strval(array_search($caracteristic->label, wp_list_pluck(get_taxonomies([], 'objects'), 'label'))); ?>">
-                            <option disabled selected>Sélectionnez</option>
-                            <?php
-                            foreach (get_terms($caracteristic->name) as $term) :  ?>
-                                <option id="<?php echo $term->slug; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                            <label for="<?php echo $caracteristic->name; ?>"><?php echo $caracteristic->label; ?></label>
+                            <select class="p28f-select" name="<?php echo $caracteristic->name; ?>" id="<?php echo strval(array_search($caracteristic->label, wp_list_pluck(get_taxonomies([], 'objects'), 'label'))); ?>">
+                                <option disabled selected>Sélectionnez</option>
+                                <?php
+                                foreach (get_terms($caracteristic->name) as $term) :  ?>
+                                    <option id="<?php echo $term->slug; ?>" value="<?php echo $term->term_id; ?>"><?php echo $term->name; ?></option>
+                                <?php endforeach; ?>
+                            </select>
 
-                    </div>
+                        </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <input type="hidden" value="<?php echo $get_taxo->taxonomy; ?>" id="p28f-taxonomy" />

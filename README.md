@@ -56,6 +56,13 @@ p28-filter/
 ### Workflow
 * feature-logicAPI : Développement de la logique du système pour l'archive Oeuvre + mise en page du filtrage
 * feature-compatibilityAllNativeArchives : Rendre compatible le système sur toutes les pages d'archives native à WordPress
+* feature-intergrationV1 : Merge des deux fonctionnalités précédentes logicApi + compatibility
+```
+main ──┬───────────────────────────────────────────────────────────────────────────┬─
+       │                                                                           │ 
+       ├── feature-logicApi ──> feature-compatibility ──> feature-integrationV1  ──├
+      
+```
 
 # Développement
 ## Installation du projet
