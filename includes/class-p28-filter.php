@@ -333,10 +333,10 @@ class P28_Filter
 
 		$params = $request->get_params();
 
-		if (is_post_type_archive('oeuvre')) {
-			$args['tax_query'] = $this->filterable_taxonomies($params);
-			$args['meta_query'] = $this->filterable_acf_fields($params);
-		}
+
+		$args['tax_query'] = $this->filterable_taxonomies($params);
+		$args['meta_query'] = $this->filterable_acf_fields($params);
+
 		return $args;
 	}
 
