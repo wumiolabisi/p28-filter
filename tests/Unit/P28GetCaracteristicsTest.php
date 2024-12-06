@@ -48,8 +48,7 @@ class P28GetCaracteristicsTest extends TestCase
 
 
         // Appelle la fonction que nous testons
-        $p28_filter = new P28_Filter();
-        $result = $p28_filter->p28_get_caracteristics();
+        $result = P28_Filter::get_instance()->p28_get_caracteristics();
 
         // Vérifie que le résultat est le titre attendu
         $this->assertEquals(42, $result['term_id']);
@@ -57,7 +56,7 @@ class P28GetCaracteristicsTest extends TestCase
         $this->assertEquals('oeuvre', $result['slug']);
     }
     /**
-     * Lorsque la méthode retourne unn tableau
+     * Lorsque la méthode retourne un objet
      */
     public function test_p28_get_caracteristics_when_queried_object_is_object()
     {
@@ -72,10 +71,7 @@ class P28GetCaracteristicsTest extends TestCase
             ->once()
             ->andReturn($mock_queried_object);
 
-
-        //$p28_filter = new P28_Filter();
-        $p28_filter = new P28_Filter();
-        $result = $p28_filter->p28_get_caracteristics();
+        $result = P28_Filter::get_instance()->p28_get_caracteristics();
 
 
         $this->assertEquals(42, $result->term_id);
@@ -84,7 +80,7 @@ class P28GetCaracteristicsTest extends TestCase
     }
 
     /**
-     * Lorsque l'objet à retourner n'existe pas
+     * Lorsque l'objet à retourner est null
      */
     public function test_p28_get_caracteristics_when_queried_object_does_not_exists()
     {
@@ -96,11 +92,44 @@ class P28GetCaracteristicsTest extends TestCase
             ->andReturn($mock_queried_object);
 
 
-
-        $p28_filter = new P28_Filter();
-        $result = $p28_filter->p28_get_caracteristics();
+        $result = P28_Filter::get_instance()->p28_get_caracteristics();
 
 
         $this->assertEquals(null, $result);
+    }
+    /**
+     * Lorsque l'objet requêté est vide
+     */
+    public function test_p28_get_caracteristics_when_object_is_empty()
+    {
+        $mock_queried_object = (object) [];
+
+        Monkey\Functions\expect('get_queried_object')
+            ->once()
+            ->andReturn($mock_queried_object);
+
+        $result = P28_Filter::get_instance()->p28_get_caracteristics();
+
+
+
+        $this->assertEquals((object) [], $result);
+    }
+    /**
+     * Lorsque l'objet requêté est incomplet
+     */
+    public function test_p28_get_caracteristics_when_array_is_incomplete()
+    {
+        $mock_queried_object = ['term_id' => 42];
+
+        Monkey\Functions\expect('get_queried_object')
+            ->once()
+            ->andReturn($mock_queried_object);
+
+        $result = P28_Filter::get_instance()->p28_get_caracteristics();
+
+
+        $this->assertEquals(42, $result['term_id']);
+        $this->assertArrayNotHasKey('name', $result);
+        $this->assertArrayNotHasKey('slug', $result);
     }
 }

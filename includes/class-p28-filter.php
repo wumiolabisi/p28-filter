@@ -219,7 +219,7 @@ class P28_Filter
 	 * 
 	 * @return 	array	Les arguments pour la meta_query de la WP_Query	
 	 */
-	private function filterable_acf_fields($r)
+	public function filterable_acf_fields($r)
 	{
 		$meta_query = array(
 			'relation'  => 'AND'
@@ -281,7 +281,7 @@ class P28_Filter
 	 * 
 	 * @return 	array	Les arguments pour la tax_query de la WP_Query	
 	 */
-	private function filterable_taxonomies($r)
+	public function filterable_taxonomies($r)
 	{
 		$tax_query = array(
 			'relation'  => 'AND'
@@ -372,25 +372,35 @@ class P28_Filter
 	 */
 	public function p28_get_ACF()
 	{
+
+		$acf_stuff = [];
+
 		if (class_exists('ACF')) {
-			$queried_object = get_queried_object();
-			$queried_obj_id = get_queried_object_id();
-			$acf_stuff = [];
 
-			if (is_object($queried_object)) {
+			if (is_page('realisation')) {
 
-				if ($queried_object instanceof WP_Post_Type) {
+				$acf_realisation = acf_get_fields(array(36));
+
+
+				foreach ($acf_realisation as $field) {
+					if ($field['name'] == 'nationalite') {
+						array_push($acf_stuff, $field);
+					}
+				}
+			} else {
+
+				$queried_object = get_queried_object();
+				$queried_obj_id = get_queried_object_id();
+
+
+				if (isset($queried_object)) {
+
 					$acf_groups = acf_get_field_groups(array('post_id' => $queried_obj_id));
 
-
 					foreach ($acf_groups as $acf_group) {
-
-
 						if (acf_get_fields($acf_group['key'])) {
 
 							foreach (acf_get_fields($acf_group['key']) as $i => $field) {
-
-
 								if ($field['name'] == 'date_de_sortie' || $field['name'] == 'pays') {
 									array_push($acf_stuff, $field);
 								}
@@ -399,6 +409,7 @@ class P28_Filter
 					}
 				}
 			}
+
 			return $acf_stuff;
 		}
 	}

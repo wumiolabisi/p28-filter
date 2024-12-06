@@ -8,6 +8,7 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
     <div class="p28f-search-form">
         <?php
         if (isset($get_taxo)) :
+
             if (is_array($get_taxo)) : ?>
                 <?php foreach ($get_taxo as $caracteristic) : ?>
                     <?php if ($caracteristic->name == "realisation" || $caracteristic->name == "genre" || $caracteristic->name == "format" || $caracteristic->name == "etiquette") : ?>
@@ -32,7 +33,6 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
             <?php endif;
 
         if (isset($get_acf)) :
-
 
 
             foreach ($get_acf as $caracteristic) : ?>
