@@ -18,7 +18,13 @@ export function loadMorePosts(posts, displayArea, p28EndMsgArea) {
     posts.more().done(function (nextPosts) {
 
         nextPosts.forEach(nextPost => {
-            displayArea.innerHTML += gridResult(nextPost.id, nextPost.title.rendered, nextPost.link, nextPost.acf.affiche_url);
+            if (nextPost.taxonomy == 'realisation') {
+                displayArea.innerHTML += gridResult(nextPost.id, nextPost.title.rendered, nextPost.link, nextPost.acf.affiche_url, 'realisation');
+
+            } else {
+                displayArea.innerHTML += gridResult(nextPost.id, nextPost.title.rendered, nextPost.link, nextPost.acf.affiche_url);
+
+            }
         });
 
 

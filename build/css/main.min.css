@@ -75,17 +75,37 @@ form#p28f-searchForm button:hover {
   flex-wrap: wrap;
   min-height: 300px;
 }
-.p28f-results div.p28f-result-item {
+.p28f-results div.p28f-result-container {
+  display: flex;
+  flex-direction: column;
+}
+.p28f-results div.p28f-result-container div.p28f-result-item {
   width: 100%;
   height: 100%;
   min-width: 150px;
-  min-height: 235px;
+  min-height: 305px;
 }
-.p28f-results div.p28f-result-item:hover {
+.p28f-results div.p28f-result-container div.p28f-result-item:hover {
   width: calc(100% - 6px);
   transition-duration: 0.05s;
 }
-.p28f-results div.p28f-result-item img.p28f-thumbnail {
+.p28f-results div.p28f-result-container div.p28f-result-item-real {
+  width: 100%;
+  height: 300px;
+}
+.p28f-results div.p28f-result-container div.p28f-result-item-real:hover {
+  width: calc(100% - 6px);
+  transition-duration: 0.05s;
+}
+.p28f-results div.p28f-result-container div.p28f-result-item-real img.p28f-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.p28f-results div.p28f-result-container .p28f-result-item-title a > h3 {
+  text-align: center;
+}
+.p28f-results img.p28f-thumbnail {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -221,6 +241,10 @@ div#p28f-trigger-mobile-only {
 @media screen and (min-width: 40em) {
   .p28f-results {
     grid-template-columns: repeat(4, 1fr);
+  }
+  .p28f-results div.p28f-result-item-real {
+    width: 200px;
+    height: 200px;
   }
   form#p28f-searchForm div.p28f-search-form {
     gap: 15px !important;

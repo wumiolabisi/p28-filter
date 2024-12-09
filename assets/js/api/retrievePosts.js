@@ -31,7 +31,6 @@ export function retrievePosts(e, countZone, endZone, resultsZone, errorZone) {
         const p28fTaxonomyTerm = document.getElementById("p28f-taxonomy-term-id").value;
         data[p28fTaxonomy] = p28fTaxonomyTerm;
     }
-    console.log(data);
 
     if (document.querySelector("input#is-page-realisation")) {
         allPosts = new wp.api.collections.Realisation();
@@ -60,10 +59,17 @@ export function retrievePosts(e, countZone, endZone, resultsZone, errorZone) {
             endZone.innerHTML = "<p>Il n'y a pas de posts correspondant à votre recherche.</p>";
 
         } else {
+
+
             countZone.innerHTML = allPosts.state.totalObjects == 1 ? "<p>Une fiche trouvée</p>" : `<p>${allPosts.state.totalObjects} fiches trouvées </p>`;
-            console.log(posts)
             posts.forEach(post => {
-                resultsZone.innerHTML += gridResult(post.id, post.title.rendered, post.link, post.acf.affiche_url);
+                if (post.taxonomy == 'realisation') {
+                    resultsZone.innerHTML += gridResult(post.id, post.title.rendered, post.link, post.acf.affiche_url, 'realisation');
+
+                } else {
+                    resultsZone.innerHTML += gridResult(post.id, post.title.rendered, post.link, post.acf.affiche_url);
+
+                }
 
             });
 
