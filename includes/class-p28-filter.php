@@ -233,6 +233,14 @@ class P28_Filter
 				'compare'   => 'LIKE'
 			);
 		}
+		if (isset($r['nationalite']) && $r['nationalite'] != null) {
+
+			$meta_query[] =  array(
+				'key'       => 'nationalite',
+				'value'     => '"' . $r['nationalite'] . '"',
+				'compare'   => 'LIKE'
+			);
+		}
 
 		if (isset($r['duree']) && $r['duree'] != null) {
 
@@ -259,17 +267,21 @@ class P28_Filter
 
 		return $meta_query;
 	}
+
+	/**
+	 * Modify the response before retrieving it
+	 */
 	public function modify_rest_response($response, $post)
 	{
-
-		$affiche = get_field('affiche', $post->ID);
+		$acf_field_name = (is_a($post, 'WP_Term')) ? 'taxonomy_thumbnail' : 'affiche';
+		$affiche = $acf_field_name == 'affiche' ? get_field($acf_field_name, $post->ID) : get_field($acf_field_name, 'realisation_' . $post->term_id);
 
 		if ($affiche) {
 
 			$response->data['acf']['affiche_url'] = wp_get_attachment_url($affiche['id']);
 		}
 
-
+		$response->data['title']['rendered'] = $post->name;
 
 
 		return $response;
@@ -333,7 +345,6 @@ class P28_Filter
 
 		$params = $request->get_params();
 
-
 		$args['tax_query'] = $this->filterable_taxonomies($params);
 		$args['meta_query'] = $this->filterable_acf_fields($params);
 
@@ -348,7 +359,10 @@ class P28_Filter
 	public function register_rest_hooks()
 	{
 		$this->loader->add_filter("rest_oeuvre_query", $this, 'filter_rest_query', 1, 2);
+		$this->loader->add_filter("rest_realisation_query", $this, 'filter_rest_query', 1, 2);
+
 		$this->loader->add_filter('rest_prepare_oeuvre', $this, 'modify_rest_response', 2, 3);
+		$this->loader->add_filter('rest_prepare_realisation', $this, 'modify_rest_response', 2, 3);
 	}
 
 
@@ -380,7 +394,6 @@ class P28_Filter
 			if (is_page('realisation')) {
 
 				$acf_realisation = acf_get_fields(array(36));
-
 
 				foreach ($acf_realisation as $field) {
 					if ($field['name'] == 'nationalite') {

@@ -63,12 +63,14 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
 
             </div>
             <div class="p28f-btn" id="p28f-filter-mobile-only">Filtrer</div>
-            <div class="p28f-form-item">
-                <span id="p28f-reset-filters" onclick="window.location.reload();">Réinitialiser tous les filtres</span>
-            </div>
+
+        <?php elseif (is_page('realisation')) : ?>
+            <input type="hidden" value="true" id="is-page-realisation" />
         <?php endif;
         ?>
-
+        <div class="p28f-form-item">
+            <span id="p28f-reset-filters" onclick="window.location.reload();">Réinitialiser tous les filtres</span>
+        </div>
     </div>
 </form>
 <?php if (is_post_type_archive('oeuvre')) :

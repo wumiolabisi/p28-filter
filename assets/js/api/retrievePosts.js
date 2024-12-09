@@ -7,36 +7,37 @@ export function retrievePosts(e, countZone, endZone, resultsZone, errorZone) {
 
     e.preventDefault();
 
+    let allPosts;
     let selectElements = document.getElementsByClassName("p28f-select");
     const data = {};
 
     // Récupération des valeurs du formulaire
-    for (let element of selectElements) {
+    if (selectElements) {
+        for (let element of selectElements) {
 
+            if (element.value !== 'Sélectionnez') {
+                data[element.name] = element.value;
 
-        if (element.value !== 'Sélectionnez') {
-            data[element.name] = element.value;
-
-            if (element.name == "duree") {
-                data['duree'] = handleDurationField(element.value);
+                if (element.name == "duree") {
+                    data['duree'] = handleDurationField(element.value);
+                }
             }
+
         }
-
-
-
     }
-
     if (document.querySelector("input#p28f-taxonomy") && document.querySelector("input#p28f-taxonomy-term-id")) {
 
         const p28fTaxonomy = document.getElementById("p28f-taxonomy").value;
         const p28fTaxonomyTerm = document.getElementById("p28f-taxonomy-term-id").value;
         data[p28fTaxonomy] = p28fTaxonomyTerm;
     }
-
     console.log(data);
 
-    // Création de la collection et envoi de la requête
-    const allPosts = new wp.api.collections.Oeuvres();
+    if (document.querySelector("input#is-page-realisation")) {
+        allPosts = new wp.api.collections.Realisation();
+    } else {
+        allPosts = new wp.api.collections.Oeuvres();
+    }
 
     allPosts.fetch({
         data: {
@@ -59,9 +60,9 @@ export function retrievePosts(e, countZone, endZone, resultsZone, errorZone) {
             endZone.innerHTML = "<p>Il n'y a pas de posts correspondant à votre recherche.</p>";
 
         } else {
-            countZone.innerHTML = "<p>" + allPosts.state.totalObjects + " fiches trouvées</p>";
+            countZone.innerHTML = allPosts.state.totalObjects == 1 ? "<p>Une fiche trouvée</p>" : `<p>${allPosts.state.totalObjects} fiches trouvées </p>`;
+            console.log(posts)
             posts.forEach(post => {
-
                 resultsZone.innerHTML += gridResult(post.id, post.title.rendered, post.link, post.acf.affiche_url);
 
             });
