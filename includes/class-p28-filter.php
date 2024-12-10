@@ -392,12 +392,16 @@ class P28_Filter
 		if (class_exists('ACF')) {
 
 			if (is_page('realisation')) {
+				$groups = acf_get_field_groups(array('taxonomy' => 'realisation'));
 
-				$acf_realisation = acf_get_fields(array(36));
+				if (!empty($groups)) {
+					$group_key = $groups[0]['key'];
+					$fields = acf_get_fields($group_key);
 
-				foreach ($acf_realisation as $field) {
-					if ($field['name'] == 'nationalite') {
-						array_push($acf_stuff, $field);
+					foreach ($fields as $field) {
+						if ($field['name'] == 'nationalite') {
+							array_push($acf_stuff, $field);
+						}
 					}
 				}
 			} else {

@@ -84,6 +84,18 @@ Pour lancer un build :
 ```
 npm run build
 ```
+# Installation sur Wordress
+1. Téléchargez l’archive ZIP du plugin depuis GitHub Releases.
+2. Rendez-vous sur votre tableau de bord WordPress : Extensions > Ajouter.
+3. Cliquez sur Téléverser une extension et sélectionnez l’archive ZIP.
+4. Activez le plugin après l'installation.
+
+## Utilisation
+* Ajoutez le shortcode suivant dans votre contenu ou votre page :
+` 
+[p28_filter]
+`
+⚠️ Important : Le plugin gère l’affichage des contenus filtrés. Assurez-vous qu'il n’y ait pas de boucle WordPress dans le modèle utilisé par cette page.
 
 # Problématiques rencontrées
 ## Semaine du 25 novembre : 

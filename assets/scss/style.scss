@@ -83,7 +83,6 @@ form#p28f-searchForm {
 
     grid-template-columns: repeat(2, 1fr);
     display: grid;
-    align-items: start;
     justify-content: center;
     gap: 5px;
     flex-wrap: wrap;
@@ -188,6 +187,7 @@ button#p28f-load-more-btn {
 .p28f-filtering-area-for-mobile {
     display: flex;
     top: 0;
+    left: 0;
     position: fixed;
     width: 100%;
     height: 100vh;
