@@ -281,7 +281,10 @@ class P28_Filter
 			$response->data['acf']['affiche_url'] = wp_get_attachment_url($affiche['id']);
 		}
 
-		$response->data['title']['rendered'] = $post->name;
+		if (!isset($response->data['title']['rendered'])) {
+			$response->data['title']['rendered'] = $post->name;
+		}
+
 
 
 		return $response;
