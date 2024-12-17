@@ -146,6 +146,7 @@ button#p28f-load-more-btn {
   height: 40px;
   text-transform: uppercase;
   font-family: inherit;
+  color: #2e2e2e;
 }
 button#p28f-load-more-btn:hover {
   background-color: #2e2e2e;
@@ -153,7 +154,7 @@ button#p28f-load-more-btn:hover {
 }
 @media screen and (max-width: 40em) {
   button#p28f-load-more-btn {
-    font-size: 3vw;
+    font-size: 16px;
     width: 310px;
     height: 55px;
   }
