@@ -17,6 +17,8 @@ import { gridResult } from "../ui/gridResult";
 export function loadMorePosts(posts, displayArea, p28EndMsgArea) {
     posts.more().done(function (nextPosts) {
 
+        console.log(posts.hasMore());
+
         nextPosts.forEach(nextPost => {
             if (nextPost.taxonomy == 'realisation') {
                 displayArea.innerHTML += gridResult(nextPost.id, nextPost.title.rendered, nextPost.link, nextPost.acf.affiche_url, 'realisation');
@@ -28,8 +30,16 @@ export function loadMorePosts(posts, displayArea, p28EndMsgArea) {
         });
 
 
-        if (posts.hasMore.length != 0) {
+        if (posts.hasMore()) {
             p28EndMsgArea.innerHTML = button('Charger plus');
+
+            let p28fLoadMoreButton = document.querySelector('button#p28f-load-more-btn');
+
+            p28fLoadMoreButton.addEventListener('click', function () {
+
+                p28fLoadMoreButton.style.display = "none";
+                loadMorePosts(posts, displayArea, p28EndMsgArea);
+            });
         } else {
             document.querySelector('button#p28f-load-more-btn').style.display = "none";
             p28EndMsgArea.innerHTML = '<p>Fin des posts.</p>';

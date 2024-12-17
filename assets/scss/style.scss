@@ -182,6 +182,12 @@ button#p28f-load-more-btn {
         background-color: #2e2e2e;
         color: #ffffff;
     }
+
+    @media screen and (max-width: $md) {
+        font-size: 3vw;
+        width: 310px;
+        height: 55px;
+    }
 }
 
 .p28f-filtering-area-for-mobile {
@@ -210,6 +216,7 @@ button#p28f-load-more-btn {
     text-transform: uppercase;
     font-family: inherit;
     padding: 5px 15px;
+    color: #2e2e2e;
 
     &:hover {
         background-color: #2e2e2e;

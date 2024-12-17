@@ -151,6 +151,13 @@ button#p28f-load-more-btn:hover {
   background-color: #2e2e2e;
   color: #ffffff;
 }
+@media screen and (max-width: 40em) {
+  button#p28f-load-more-btn {
+    font-size: 3vw;
+    width: 310px;
+    height: 55px;
+  }
+}
 
 .p28f-filtering-area-for-mobile {
   display: flex;
@@ -178,6 +185,7 @@ button#p28f-load-more-btn:hover {
   text-transform: uppercase;
   font-family: inherit;
   padding: 5px 15px;
+  color: #2e2e2e;
 }
 .p28f-btn:hover {
   background-color: #2e2e2e;
