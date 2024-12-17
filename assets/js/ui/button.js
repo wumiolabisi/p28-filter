@@ -11,7 +11,7 @@
 export function button(text) {
 
 
-    let buttonElement = document.createElement("button");
+    let buttonElement = document.createElement("a");
     buttonElement.id = "p28f-load-more-btn";
     buttonElement.value, buttonElement.innerHTML = text;
 

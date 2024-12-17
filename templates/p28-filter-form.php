@@ -76,7 +76,7 @@ $get_acf = P28_Filter::get_instance()->p28_get_ACF();
 
     </div>
 </form>
-<?php if (is_post_type_archive('oeuvre') || is_page('realisation')) :
+<?php if (is_post_type_archive('oeuvre')) :
 ?>
     <div class="p28f-btn" id="p28f-trigger-mobile-only">Filtrer</div>
 <?php endif; ?>

@@ -33,7 +33,7 @@ export function loadMorePosts(posts, displayArea, p28EndMsgArea) {
         if (posts.hasMore()) {
             p28EndMsgArea.innerHTML = button('Charger plus');
 
-            let p28fLoadMoreButton = document.querySelector('button#p28f-load-more-btn');
+            let p28fLoadMoreButton = document.querySelector('a#p28f-load-more-btn');
 
             p28fLoadMoreButton.addEventListener('click', function () {
 
@@ -41,7 +41,7 @@ export function loadMorePosts(posts, displayArea, p28EndMsgArea) {
                 loadMorePosts(posts, displayArea, p28EndMsgArea);
             });
         } else {
-            document.querySelector('button#p28f-load-more-btn').style.display = "none";
+            document.querySelector('a#p28f-load-more-btn').style.display = "none";
             p28EndMsgArea.innerHTML = '<p>Fin des posts.</p>';
         }
 

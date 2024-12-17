@@ -81,7 +81,7 @@ export function retrievePosts(e, countZone, endZone, resultsZone, errorZone) {
                 endZone.innerHTML = button('Charger plus');
 
 
-                let p28fLoadMoreButton = document.querySelector('button#p28f-load-more-btn');
+                let p28fLoadMoreButton = document.querySelector('a#p28f-load-more-btn');
 
                 p28fLoadMoreButton.addEventListener('click', function () {
 
